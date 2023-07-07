@@ -1,0 +1,8 @@
+name: rgi5
+channels:
+  - bioconda
+  - conda-forge
+dependencies:
+  - biopython=1.72
+  - blast=2.9.0
+  - rgi=5.1.1
