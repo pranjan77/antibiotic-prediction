@@ -153,4 +153,5 @@ dmypy.json
 cython_debug/
 
 # Data
+data/temp_file/
 outputs/

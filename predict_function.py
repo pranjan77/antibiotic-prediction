@@ -13,14 +13,12 @@ import cluster_function_prediction_tools as tools
 import readFeatureFiles
 import readInputFiles
 import SSN_tools
-from train_classifiers import SSN_pfam_names
-
 
 PARSER = argparse.ArgumentParser()
 PARSER.add_argument("antismash_dir", help="Directory containing the antismash output")
 PARSER.add_argument("rgi_dir", help="Directory containing the rgi output")
 PARSER.add_argument(
-    "data_dir", help="Directory containing the data (classifiers)", default="data"
+    "--data_dir", help="Directory containing the data (classifiers)", default="data"
 )
 PARSER.add_argument(
     "--output_dir", help="Directory for the output files", default="outputs"
@@ -43,6 +41,56 @@ PARSER.add_argument(
 )
 
 ARGS = PARSER.parse_args()
+
+SSN_pfam_names = [
+    "Thiolase, N-terminal domain",
+    "ABC transporter",
+    "Acyl transferase domain",
+    "AAA domain",
+    "ABC-2 family transporter protein",
+    "Acyl-CoA dehydrogenase, C-terminal domain",
+    "Acyl-CoA dehydrogenase, N-terminal domain",
+    "Alcohol dehydrogenase GroES-like domain",
+    "Alpha/beta hydrolase family",
+    "Aminotransferase class I and II",
+    "Beta-ketoacyl synthase, C-terminal domain",
+    "Beta-ketoacyl synthase, N-terminal domain",
+    "Cytochrome P450",
+    "DegT/DnrJ/EryC1/StrS aminotransferase family",
+    "Enoyl-(Acyl carrier protein) reductase",
+    "Erythronolide synthase docking",
+    "FAD binding domain",
+    "Glycosyl transferase family 2",
+    "Glycosyltransferase family 28 N-terminal domain",
+    "Glycosyl transferases group 1",
+    "Glycosyltransferase like family 2",
+    "Glyoxalase/Bleomycin resistance protein/Dioxygenase superfamily",
+    "KR domain",
+    "Lanthionine synthetase C-like protein",
+    "Major Facilitator Superfamily",
+    "Methyltransferase small domain",
+    "Methyltransferase domain",
+    "NAD dependent epimerase/dehydratase family",
+    "NDP-hexose 2,3-dehydratase",
+    "O-methyltransferase",
+    "Oxidoreductase family, C-terminal alpha/beta domain",
+    "Oxidoreductase family, NAD-binding Rossmann fold",
+    "Phosphopantetheine attachment site",
+    "Polyketide cyclase / dehydrase and lipid transport",
+    "Polyketide synthase dehydratase",
+    "Protein of unknown function (DUF1205)",
+    "short chain dehydrogenase",
+    "SnoaL-like domain",
+    "SpaB C-terminal domain",
+    "Sugar (and other) transporter",
+    "transcriptional_regulatory_protein,_c_terminal_domains",
+    "Thioesterase superfamily",
+    "ubiE/COQ5 methyltransferase family",
+    "UDP-glucoronosyl and UDP-glucosyl transferase",
+    "YcaO-like family",
+    "Zinc-binding dehydrogenase",
+    "pyridine_nucleotide-disulphide_oxidoreductase",
+]
 
 
 def collect_input_files(antismash_dir: pathlib.Path, rgi_dir: pathlib.Path):
@@ -80,8 +128,7 @@ def read_antismash_bgc(file: pathlib.Path):
 
 def read_rgi_bgc(file: pathlib.Path):
     try:
-        with open(file, "r") as fid:
-            rgi_infile = fid.read()
+        rgi_infile = open(file, "r")
     except:
         raise ValueError("error reading rgi output file")
     return rgi_infile
@@ -90,7 +137,7 @@ def read_rgi_bgc(file: pathlib.Path):
 def read_training_data(
     data_dir: pathlib.Path, antismash_version: int, rgi_version: int
 ):
-    data_path = str(data_dir)
+    data_path = str(data_dir) + "/"
     try:
         training_SSN_features = readFeatureFiles.readFeatureMatrix(
             data_path + "feature_matrices/SSN.csv"
@@ -216,7 +263,7 @@ def read_training_data(
 
 
 def read_SSN_features(data_dir: pathlib.Path, antismash_bgc_file: pathlib.Path):
-    data_path = str(data_dir)
+    data_path = str(data_dir) + "/"
     SSN_list = readFeatureFiles.readFeatureList(
         data_path + "feature_matrices/SSN_list.txt"
     )
@@ -263,9 +310,10 @@ def run_classifiers(classifiers, test_features, antismash_bgc_file):
             "bgc_name": bgc_name,
             "classifier_type": classifier_type,
             "prediction_type": prediction_type,
-            "probability": probability,
+            "probability": probability[0, 1],
         }
         predictions.append(prediction)
+        print(prediction)
     return predictions
 
 
@@ -281,7 +329,7 @@ def predict_function(
     rgi_infile = read_rgi_bgc(rgi_bgc_file)
     training_features = read_training_data(data_dir, antismash_version, rgi_version)
     test_SSN_feature_matrix = read_SSN_features(data_dir, antismash_bgc_file)
-    data_path = str(data_dir)
+    data_path = str(data_dir) + "/"
     test_features = readInputFiles.readInputFiles(
         as_features,
         antismash_version,
@@ -292,6 +340,7 @@ def predict_function(
         test_SSN_feature_matrix,
     )
     prediction_results = run_classifiers(classifiers, test_features, antismash_bgc_file)
+    rgi_infile.close()
     return prediction_results
 
 

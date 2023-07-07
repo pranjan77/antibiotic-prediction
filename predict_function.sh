@@ -20,4 +20,9 @@ done
 # Step 3: Run prediction script for each BGC
 source deactivate
 source activate natural_product
-python predict_function.py $OUTPUT_DIR
+python predict_function.py $OUTPUT_DIR/antismash $OUTPUT_DIR/rgi \
+    --data_dir data \
+    --output_dir $OUTPUT_DIR \
+    --classifiers tree \
+    --antismash_version 5 \
+    --rgi_version 5
