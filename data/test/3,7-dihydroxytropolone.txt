@@ -1,0 +1,12 @@
+probabilities of antibacterial activity:
+tree classifier: 0.48949753694581283 logistic regression classifier: 0.40197472822060554 svm classifier: 0.36104723035695774
+probabilities of anti-gram positive activity:
+tree classifier: 0.47005494505494505 logistic regression classifier: 0.2190546035936961 svm classifier: 0.18836518743670097
+probabilities of anti-gram negative activity:
+tree classifier: 0.12 logistic regression classifier: 0.015925752984421265 svm classifier: 0.0403841819246923
+probabilities of antifugnal or antitumor or cytotoxic activity:
+tree classifier: 0.12 logistic regression classifier: 0.2595430514615263 svm classifier: 0.34633851497835544
+probabilities of antifungal activity:
+tree classifier: 0.14260794103626373 logistic regression classifier: 0.11384456264793909 svm classifier: 0.09415456163113607
+probabilities of antitumor or cytotoxic activity:
+tree classifier: 0.21742518172614114 logistic regression classifier: 0.19337272392880145 svm classifier: 0.15880011852570883
