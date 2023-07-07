@@ -14,33 +14,6 @@ import readFeatureFiles
 import readInputFiles
 import SSN_tools
 
-PARSER = argparse.ArgumentParser()
-PARSER.add_argument("antismash_dir", help="Directory containing the antismash output")
-PARSER.add_argument("rgi_dir", help="Directory containing the rgi output")
-PARSER.add_argument(
-    "--data_dir", help="Directory containing the data (classifiers)", default="data"
-)
-PARSER.add_argument(
-    "--output_dir", help="Directory for the output files", default="outputs"
-)
-PARSER.add_argument(
-    "--classifiers",
-    nargs="+",
-    help="The types of classifiers to use",
-    default=["tree"],
-)
-PARSER.add_argument(
-    "--antismash_version",
-    help="version of antismash used to generate antismash input file",
-    default="5",
-)
-PARSER.add_argument(
-    "--rgi_version",
-    help="version of rgi used to generate antismash input file",
-    default="5",
-)
-
-ARGS = PARSER.parse_args()
 
 SSN_pfam_names = [
     "Thiolase, N-terminal domain",
@@ -376,6 +349,35 @@ def main(
 
 
 if __name__ == "__main__":
+    PARSER = argparse.ArgumentParser()
+    PARSER.add_argument(
+        "antismash_dir", help="Directory containing the antismash output"
+    )
+    PARSER.add_argument("rgi_dir", help="Directory containing the rgi output")
+    PARSER.add_argument(
+        "--data_dir", help="Directory containing the data (classifiers)", default="data"
+    )
+    PARSER.add_argument(
+        "--output_dir", help="Directory for the output files", default="outputs"
+    )
+    PARSER.add_argument(
+        "--classifiers",
+        nargs="+",
+        help="The types of classifiers to use",
+        default=["tree"],
+    )
+    PARSER.add_argument(
+        "--antismash_version",
+        help="version of antismash used to generate antismash input file",
+        default="5",
+    )
+    PARSER.add_argument(
+        "--rgi_version",
+        help="version of rgi used to generate antismash input file",
+        default="5",
+    )
+    ARGS = PARSER.parse_args()
+
     antismash_dir = pathlib.Path(ARGS.antismash_dir)
     rgi_dir = pathlib.Path(ARGS.rgi_dir)
     data_dir = pathlib.Path(ARGS.data_dir)
