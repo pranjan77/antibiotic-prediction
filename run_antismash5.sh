@@ -20,7 +20,7 @@ sudo docker run \
     --detach=false \
     --rm \
     --user=$(id -u):$(id -g) \
-    antismash/standalone:7.0.0 \
+    antismash/standalone:5.1.2 \
     $INPUT_FILE \
     --fullhmmer \
     --genefinding-tool prodigal \
