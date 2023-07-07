@@ -294,13 +294,13 @@ def predict_function(
     antismash_bgc_file: pathlib.Path,
     rgi_bgc_file: pathlib.Path,
     data_dir: pathlib.Path,
+    training_features,
     classifiers,
     antismash_version: int,
     rgi_version: int,
 ):
     as_features = read_antismash_bgc(antismash_bgc_file)
     rgi_infile = read_rgi_bgc(rgi_bgc_file)
-    training_features = read_training_data(data_dir, antismash_version, rgi_version)
     test_SSN_feature_matrix = read_SSN_features(data_dir, antismash_bgc_file)
     data_path = str(data_dir) + "/"
     test_features = readInputFiles.readInputFiles(
@@ -332,11 +332,13 @@ def main(
     # Step 2: Read classifier pickle files
     classifiers = read_classifiers(data_dir, classifier_list)
     # Step 3: For each BGC predict function and store data_items
+    training_features = read_training_data(data_dir, antismash_version, rgi_version)
     for antismash_bgc_file, rgi_bgc_file in input_files:
         data_items = predict_function(
             antismash_bgc_file,
             rgi_bgc_file,
             data_dir,
+            training_features,
             classifiers,
             antismash_version,
             rgi_version,
