@@ -172,7 +172,7 @@ def findAllPFAMSeqs(genbank_file, pfam_name):
     cluster_domains = []
     score_cutoff = 20
 
-    record = SeqIO.read(open(genbank_file, "rU"), "genbank")
+    record = SeqIO.read(open(genbank_file, "r"), "genbank")
     features = record.features
     for feature in features:
         if feature.type == "PFAM_domain":

@@ -277,7 +277,7 @@ except:
 # read the antismash input file
 
 try:
-    record = SeqIO.read(open(antismash_infilename, "rU"), "genbank")
+    record = SeqIO.read(open(antismash_infilename, "r"), "genbank")
 except:
     print("error reading antismash output file")
     exit()

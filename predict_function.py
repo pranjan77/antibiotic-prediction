@@ -38,7 +38,7 @@ def read_classifiers(data_dir: pathlib.Path, classifier_list: List[str]):
 
 def read_antismash_bgc(file: pathlib.Path):
     try:
-        with open(file, "rU") as fid:
+        with open(file, "r") as fid:
             record = SeqIO.read(fid, "genbank")
     except:
         raise ValueError("error reading antismash output file")

@@ -6,8 +6,8 @@ OUTPUT_DIR=$2/$GENOME_NAME
 mkdir -p $OUTPUT_DIR
 
 # Step 1: Run antismash
-echo "Running antismash"
-if [ ! -d ${OUTPUT_DIR/antismash} ]; then
+if [ ! -d "$OUTPUT_DIR/antismash" ]; then
+    echo "Running antismash"
     mkdir -p $OUTPUT_DIR/antismash
     bash run_antismash5.sh $GENOME $OUTPUT_DIR/antismash
 fi
@@ -15,8 +15,8 @@ fi
 # Step 2: For each BGC get fasta and run RGI
 source deactivate
 source activate rgi5
-echo "Running RGI"
-if [ ! -d ${OUTPUT_DIR/rgi} ]; then
+if [ ! -d "$OUTPUT_DIR/rgi" ]; then
+    echo "Running RGI"
     mkdir -p $OUTPUT_DIR/rgi
     for f in $OUTPUT_DIR/antismash/*region*.gbk; do
         BGC=$(basename "$f" .gbk)
