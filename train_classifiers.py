@@ -435,11 +435,11 @@ svm_bacterial_prob, svm_bacterial_classifier = tools.svmPrediction(
     training_features, y_vars, test_features, svm_params, seed
 )
 
-with open(data_path + "classifiers/tree_bacterial_classifier.pkl", "wb") as fid:
+with open(data_path + "classifiers/tree_antibacterial_classifier.pkl", "wb") as fid:
     pickle.dump(tree_bacterial_classifier, fid)
-with open(data_path + "classifiers/log_bacterial_classifier.pkl", "wb") as fid:
+with open(data_path + "classifiers/log_antibacterial_classifier.pkl", "wb") as fid:
     pickle.dump(log_bacterial_classifier, fid)
-with open(data_path + "classifiers/svm_bacterial_classifier.pkl", "wb") as fid:
+with open(data_path + "classifiers/svm_antibacterial_classifier.pkl", "wb") as fid:
     pickle.dump(svm_bacterial_classifier, fid)
 
 # antieuk predictions

@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 
 GENOME=$1
-OUTPUT_DIR=$2
+GENOME_FOLDER=$(basename $GENOME .fna)
+OUTPUT_DIR=$2/$GENOME_FOLDER
 
 # Step 1: Run antismash
 bash run_antismash5.sh $GENOME $OUTPUT_DIR/antismash
