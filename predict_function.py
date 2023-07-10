@@ -58,13 +58,18 @@ def run_classifiers(classifiers, test_features, antismash_bgc_file):
     predictions = []
     bgc_name = antismash_bgc_file.stem
     for cl_name, cl in classifiers.items():
-        classifier_type, prediction_type = cl_name.split("_")
+        classifier, function = cl_name.split("_")
         probability = cl.predict_proba(test_features)
+        genome = antismash_bgc_file.parent.parent.stem
+        contig = bgc_name.split("_")[0]
+        region = bgc_name.rsplit("...")[-1].strip("region")
         prediction = {
-            "bgc_name": bgc_name,
-            "classifier_type": classifier_type,
-            "prediction_type": prediction_type,
-            "probability": probability[0, 1],
+            "genome": genome,
+            "contig": contig,
+            "region": region,
+            "classifier": classifier,
+            "function": function,
+            "probability": "{:.3f}".format(probability[0, 1]),
         }
         predictions.append(prediction)
         print(prediction)
