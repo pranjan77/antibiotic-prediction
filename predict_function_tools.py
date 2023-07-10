@@ -2,6 +2,8 @@
 
 import pathlib
 
+import numpy as np
+
 import readFeatureFiles
 import SSN_tools
 
