@@ -84,6 +84,7 @@ def predict_function(
     classifiers,
     antismash_version: int,
     rgi_version: int,
+    output_dir: pathlib.Path,
 ):
     as_features = read_antismash_bgc(antismash_bgc_file)
     rgi_infile = read_rgi_bgc(rgi_bgc_file)
@@ -98,6 +99,8 @@ def predict_function(
         data_path,
         test_SSN_feature_matrix,
     )
+    feature_file = output_dir / (antismash_bgc_file.stem + ".csv")
+    np.savetxt(feature_file, test_features, delimiter=",")
     prediction_results = run_classifiers(classifiers, test_features, antismash_bgc_file)
     rgi_infile.close()
     return prediction_results
@@ -128,6 +131,7 @@ def main(
             classifiers,
             antismash_version,
             rgi_version,
+            output_dir,
         )
         data.extend(data_items)
     df = pd.DataFrame(data)
