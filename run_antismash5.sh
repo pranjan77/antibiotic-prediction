@@ -12,7 +12,7 @@ if [ ! -d ${OUTPUT_DIR} ]; then
     mkdir ${OUTPUT_DIR}
 fi
 
-echo $1
+echo "Running antismash on $1"
 
 sudo docker run \
     --volume "$PWD:/input:ro" \
