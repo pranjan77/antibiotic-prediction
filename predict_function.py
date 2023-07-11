@@ -100,7 +100,7 @@ def predict_function(
         test_SSN_feature_matrix,
     )
     feature_file = output_dir / (antismash_bgc_file.stem + ".csv")
-    np.savetxt(feature_file, test_features, delimiter=",")
+    np.savetxt(feature_file, test_features, fmt="%d", delimiter=",")
     prediction_results = run_classifiers(classifiers, test_features, antismash_bgc_file)
     rgi_infile.close()
     return prediction_results
