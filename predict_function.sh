@@ -13,7 +13,7 @@ if [ ! -d "$OUTPUT_DIR/antismash" ]; then
 fi
 
 # Step 2: For each BGC get fasta and run RGI
-source deactivate
+conda deactivate
 source activate rgi5
 if [ ! -d "$OUTPUT_DIR/rgi" ]; then
     echo "Running RGI"
@@ -27,12 +27,18 @@ if [ ! -d "$OUTPUT_DIR/rgi" ]; then
 fi
 
 # Step 3: Run prediction script for each BGC
-source deactivate
+conda deactivate
 source activate natural_product
-echo "Running BGC activity prediction"
-python predict_function.py $OUTPUT_DIR/antismash $OUTPUT_DIR/rgi \
-    --data_dir data \
-    --output_dir $OUTPUT_DIR \
-    --classifiers tree \
-    --antismash_version 5 \
-    --rgi_version 5
+if [ ! -f "$OUTPUT_DIR/prediction_results.csv" ]; then
+    echo "Running BGC activity prediction"
+    python predict_function.py $OUTPUT_DIR/antismash $OUTPUT_DIR/rgi \
+        --data_dir data \
+        --output_dir $OUTPUT_DIR \
+        --classifiers tree \
+        --antismash_version 5 \
+        --rgi_version 5
+fi
+
+# TODO: Two sets of classifiers SSN and no_SSN
+# TODO: Documentation in HTML
+# TODO: Provide options for svm, log
