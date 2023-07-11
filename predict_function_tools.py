@@ -59,7 +59,7 @@ SSN_pfam_names = [
 
 
 def read_training_data(
-    data_dir: pathlib.Path, antismash_version: int, rgi_version: int
+    data_dir: pathlib.Path, no_SSN: bool, antismash_version: int, rgi_version: int
 ):
     data_path = str(data_dir) + "/"
     try:
@@ -148,9 +148,10 @@ def read_training_data(
     training_features = np.concatenate(
         (training_features, training_CDS_features), axis=1
     )
-    training_features = np.concatenate(
-        (training_features, training_SSN_features), axis=1
-    )
+    if not no_SSN:
+        training_features = np.concatenate(
+            (training_features, training_SSN_features), axis=1
+        )
     if antismash_version == 4:
         training_features = np.concatenate(
             (training_features, training_pks_nrps_type_features), axis=1
@@ -186,7 +187,9 @@ def read_training_data(
     return training_features
 
 
-def read_SSN_features(data_dir: pathlib.Path, antismash_bgc_file: pathlib.Path):
+def read_SSN_features(
+    data_dir: pathlib.Path, antismash_bgc_file: pathlib.Path, no_SSN: bool
+):
     data_path = str(data_dir) + "/"
     SSN_list = readFeatureFiles.readFeatureList(
         data_path + "feature_matrices/SSN_list.txt"
@@ -196,14 +199,16 @@ def read_SSN_features(data_dir: pathlib.Path, antismash_bgc_file: pathlib.Path):
         SSN_list[i] = SSN_list[i].replace("\n", "")
 
     included_SSN_clusters = {}
-    for pfam_name in SSN_list:
-        base = pfam_name[0 : pfam_name.rfind("_")]
-        if base not in included_SSN_clusters:
-            included_SSN_clusters[base] = []
-        numbering = pfam_name[pfam_name.rfind("_") + 1 : len(pfam_name)].replace(
-            "\r", ""
-        )
-        included_SSN_clusters[base].append(numbering.replace("\n", ""))
+
+    if not no_SSN:
+        for pfam_name in SSN_list:
+            base = pfam_name[0 : pfam_name.rfind("_")]
+            if base not in included_SSN_clusters:
+                included_SSN_clusters[base] = []
+            numbering = pfam_name[pfam_name.rfind("_") + 1 : len(pfam_name)].replace(
+                "\r", ""
+            )
+            included_SSN_clusters[base].append(numbering.replace("\n", ""))
 
     antismash_infilename = str(antismash_bgc_file)
     cluster_name = antismash_infilename
@@ -212,13 +217,17 @@ def read_SSN_features(data_dir: pathlib.Path, antismash_bgc_file: pathlib.Path):
     if "/" in cluster_name:
         cluster_name = cluster_name[cluster_name.rfind("/") + 1 : len(cluster_name)]
     cluster_name = cluster_name[0 : cluster_name.find(".gbk")]
-    test_SSN_feature_matrix = SSN_tools.generateSSNFeatureMatrix(
-        [antismash_infilename],
-        SSN_pfam_names,
-        SSN_list,
-        included_SSN_clusters,
-        blastp_path,
-        cluster_name,
-        data_path,
-    )
-    return test_SSN_feature_matrix
+
+    if not no_SSN:
+        test_SSN_feature_matrix = SSN_tools.generateSSNFeatureMatrix(
+            [antismash_infilename],
+            SSN_pfam_names,
+            SSN_list,
+            included_SSN_clusters,
+            blastp_path,
+            cluster_name,
+            data_path,
+        )
+        return test_SSN_feature_matrix
+    else:
+        return []

@@ -23,9 +23,13 @@ def collect_input_files(antismash_dir: pathlib.Path, rgi_dir: pathlib.Path):
     return input_files
 
 
-def read_classifiers(data_dir: pathlib.Path, classifier_list: List[str]):
+def read_classifiers(data_dir: pathlib.Path, no_SSN: bool, classifier_list: List[str]):
     classifiers = dict()
-    pickle_files = list((data_dir / "classifiers").glob("*.pkl"))
+    if no_SSN:
+        classifier_dir = data_dir / "classifiers/no_SSN"
+    else:
+        classifier_dir = data_dir / "classifiers/SSN"
+    pickle_files = list(classifier_dir.glob("*.pkl"))
     for classifier_name in classifier_list:
         for pickle_file in pickle_files:
             fname = pickle_file.stem
@@ -81,6 +85,7 @@ def predict_function(
     rgi_bgc_file: pathlib.Path,
     data_dir: pathlib.Path,
     training_features,
+    no_SSN: bool,
     classifiers,
     antismash_version: int,
     rgi_version: int,
@@ -88,7 +93,12 @@ def predict_function(
 ):
     as_features = read_antismash_bgc(antismash_bgc_file)
     rgi_infile = read_rgi_bgc(rgi_bgc_file)
-    test_SSN_feature_matrix = read_SSN_features(data_dir, antismash_bgc_file)
+    if no_SSN:
+        test_SSN_feature_matrix = []
+    else:
+        test_SSN_feature_matrix = read_SSN_features(
+            data_dir, antismash_bgc_file, no_SSN
+        )
     data_path = str(data_dir) + "/"
     test_features = readInputFiles.readInputFiles(
         as_features,
@@ -111,6 +121,7 @@ def main(
     rgi_dir: pathlib.Path,
     data_dir: pathlib.Path,
     output_dir: pathlib.Path,
+    no_SSN: bool,
     classifier_list: List[str],
     antismash_version: int,
     rgi_version: int,
@@ -119,15 +130,18 @@ def main(
     # Step 1: Get antismash and rgi files
     input_files = collect_input_files(antismash_dir, rgi_dir)
     # Step 2: Read classifier pickle files
-    classifiers = read_classifiers(data_dir, classifier_list)
+    classifiers = read_classifiers(data_dir, no_SSN, classifier_list)
     # Step 3: For each BGC predict function and store data_items
-    training_features = read_training_data(data_dir, antismash_version, rgi_version)
+    training_features = read_training_data(
+        data_dir, no_SSN, antismash_version, rgi_version
+    )
     for antismash_bgc_file, rgi_bgc_file in input_files:
         data_items = predict_function(
             antismash_bgc_file,
             rgi_bgc_file,
             data_dir,
             training_features,
+            no_SSN,
             classifiers,
             antismash_version,
             rgi_version,
@@ -153,6 +167,11 @@ if __name__ == "__main__":
         "--output_dir", help="Directory for the output files", default="outputs"
     )
     PARSER.add_argument(
+        "--no_SSN",
+        help="Don't use pfam subfamilies in classification, program will run faster",
+        default="False",
+    )
+    PARSER.add_argument(
         "--classifiers",
         nargs="+",
         help="The types of classifiers to use",
@@ -174,6 +193,7 @@ if __name__ == "__main__":
     rgi_dir = pathlib.Path(ARGS.rgi_dir)
     data_dir = pathlib.Path(ARGS.data_dir)
     output_dir = pathlib.Path(ARGS.output_dir)
+    no_SSN = True if ARGS.no_SSN == "True" else False
     classifier_list = ARGS.classifiers
     antismash_version = int(ARGS.antismash_version)
     rgi_version = int(ARGS.rgi_version)
@@ -182,6 +202,7 @@ if __name__ == "__main__":
         rgi_dir,
         data_dir,
         output_dir,
+        no_SSN,
         classifier_list,
         antismash_version,
         rgi_version,

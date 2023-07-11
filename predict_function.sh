@@ -4,6 +4,7 @@ GENOME=$1
 GENOME_NAME=$(basename "${GENOME%%.*}")
 OUTPUT_DIR=$2/$GENOME_NAME
 mkdir -p $OUTPUT_DIR
+SSN=$3
 
 # Step 1: Run antismash
 if [ ! -d "$OUTPUT_DIR/antismash" ]; then
