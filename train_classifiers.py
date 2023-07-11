@@ -420,6 +420,11 @@ y_vars = is_antibacterial
 y_vars = y_vars[is_not_unknown_indices]
 
 
+if no_SSN:
+    classifier_output_dir = "classifiers/no_SSN/"
+else:
+    classifier_output_dir = "classifiers/SSN/"
+
 # antibacterial predictions
 svm_params = {"kernel": "rbf", "C": 10, "gamma": 0.1}
 tree_params = {"depth": 100, "n": 50}
@@ -435,11 +440,17 @@ svm_bacterial_prob, svm_bacterial_classifier = tools.svmPrediction(
     training_features, y_vars, test_features, svm_params, seed
 )
 
-with open(data_path + "classifiers/tree_antibacterial_classifier.pkl", "wb") as fid:
+with open(
+    data_path + classifier_output_dir + "tree_antibacterial_classifier.pkl", "wb"
+) as fid:
     pickle.dump(tree_bacterial_classifier, fid)
-with open(data_path + "classifiers/log_antibacterial_classifier.pkl", "wb") as fid:
+with open(
+    data_path + classifier_output_dir + "log_antibacterial_classifier.pkl", "wb"
+) as fid:
     pickle.dump(log_bacterial_classifier, fid)
-with open(data_path + "classifiers/svm_antibacterial_classifier.pkl", "wb") as fid:
+with open(
+    data_path + classifier_output_dir + "svm_antibacterial_classifier.pkl", "wb"
+) as fid:
     pickle.dump(svm_bacterial_classifier, fid)
 
 # antieuk predictions
@@ -459,11 +470,17 @@ svm_antieuk_prob, svm_antieuk_classifier = tools.svmPrediction(
     training_features, y_vars, test_features, svm_params, seed
 )
 
-with open(data_path + "classifiers/tree_antieuk_classifier.pkl", "wb") as fid:
+with open(
+    data_path + classifier_output_dir + "tree_antieuk_classifier.pkl", "wb"
+) as fid:
     pickle.dump(tree_antieuk_classifier, fid)
-with open(data_path + "classifiers/log_antieuk_classifier.pkl", "wb") as fid:
+with open(
+    data_path + classifier_output_dir + "log_antieuk_classifier.pkl", "wb"
+) as fid:
     pickle.dump(log_antieuk_classifier, fid)
-with open(data_path + "classifiers/svm_antieuk_classifier.pkl", "wb") as fid:
+with open(
+    data_path + classifier_output_dir + "svm_antieuk_classifier.pkl", "wb"
+) as fid:
     pickle.dump(svm_antieuk_classifier, fid)
 
 # antifungal predictions
@@ -483,11 +500,17 @@ svm_antifungal_prob, svm_antifungal_classifier = tools.svmPrediction(
     training_features, y_vars, test_features, svm_params, seed
 )
 
-with open(data_path + "classifiers/tree_antifungal_classifier.pkl", "wb") as fid:
+with open(
+    data_path + classifier_output_dir + "tree_antifungal_classifier.pkl", "wb"
+) as fid:
     pickle.dump(tree_antifungal_classifier, fid)
-with open(data_path + "classifiers/log_antifungal_classifier.pkl", "wb") as fid:
+with open(
+    data_path + classifier_output_dir + "log_antifungal_classifier.pkl", "wb"
+) as fid:
     pickle.dump(log_antifungal_classifier, fid)
-with open(data_path + "classifiers/svm_antifungal_classifier.pkl", "wb") as fid:
+with open(
+    data_path + classifier_output_dir + "svm_antifungal_classifier.pkl", "wb"
+) as fid:
     pickle.dump(svm_antifungal_classifier, fid)
 
 # cytotox and antitumor predictons
@@ -507,11 +530,17 @@ svm_antitumor_prob, svm_antitumor_classifier = tools.svmPrediction(
     training_features, y_vars, test_features, svm_params, seed
 )
 
-with open(data_path + "classifiers/tree_antitumor_classifier.pkl", "wb") as fid:
+with open(
+    data_path + classifier_output_dir + "tree_antitumor_classifier.pkl", "wb"
+) as fid:
     pickle.dump(tree_antitumor_classifier, fid)
-with open(data_path + "classifiers/log_antitumor_classifier.pkl", "wb") as fid:
+with open(
+    data_path + classifier_output_dir + "log_antitumor_classifier.pkl", "wb"
+) as fid:
     pickle.dump(log_antitumor_classifier, fid)
-with open(data_path + "classifiers/svm_antitumor_classifier.pkl", "wb") as fid:
+with open(
+    data_path + classifier_output_dir + "svm_antitumor_classifier.pkl", "wb"
+) as fid:
     pickle.dump(svm_antitumor_classifier, fid)
 
 # antigram negative predictions
@@ -532,11 +561,17 @@ svm_antigramneg_prob, svm_antigramneg_classifier = tools.svmPrediction(
     training_features, y_vars, test_features, svm_params, seed
 )
 
-with open(data_path + "classifiers/tree_antigramneg_classifier.pkl", "wb") as fid:
+with open(
+    data_path + classifier_output_dir + "tree_antigramneg_classifier.pkl", "wb"
+) as fid:
     pickle.dump(tree_antigramneg_classifier, fid)
-with open(data_path + "classifiers/log_antigramneg_classifier.pkl", "wb") as fid:
+with open(
+    data_path + classifier_output_dir + "log_antigramneg_classifier.pkl", "wb"
+) as fid:
     pickle.dump(log_antigramneg_classifier, fid)
-with open(data_path + "classifiers/svm_antigramneg_classifier.pkl", "wb") as fid:
+with open(
+    data_path + classifier_output_dir + "svm_antigramneg_classifier.pkl", "wb"
+) as fid:
     pickle.dump(svm_antigramneg_classifier, fid)
 
 # antigram positive predictions
@@ -556,11 +591,17 @@ svm_antigrampos_prob, svm_antigrampos_classifier = tools.svmPrediction(
     training_features, y_vars, test_features, svm_params, seed
 )
 
-with open(data_path + "classifiers/tree_antigrampos_classifier.pkl", "wb") as fid:
+with open(
+    data_path + classifier_output_dir + "tree_antigrampos_classifier.pkl", "wb"
+) as fid:
     pickle.dump(tree_antigrampos_classifier, fid)
-with open(data_path + "classifiers/log_antigrampos_classifier.pkl", "wb") as fid:
+with open(
+    data_path + classifier_output_dir + "log_antigrampos_classifier.pkl", "wb"
+) as fid:
     pickle.dump(log_antigrampos_classifier, fid)
-with open(data_path + "classifiers/svm_antigrampos_classifier.pkl", "wb") as fid:
+with open(
+    data_path + classifier_output_dir + "svm_antigrampos_classifier.pkl", "wb"
+) as fid:
     pickle.dump(svm_antigrampos_classifier, fid)
 
 # print the results
