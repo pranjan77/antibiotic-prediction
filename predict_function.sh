@@ -4,7 +4,7 @@ GENOME=$1
 GENOME_NAME=$(basename "${GENOME%%.*}")
 OUTPUT_DIR=$2/$GENOME_NAME
 mkdir -p $OUTPUT_DIR
-SSN=$3
+NO_SSN=$3
 
 # Step 1: Run antismash
 if [ ! -d "$OUTPUT_DIR/antismash" ]; then
@@ -35,6 +35,7 @@ if [ ! -f "$OUTPUT_DIR/prediction_results.csv" ]; then
     python predict_function.py $OUTPUT_DIR/antismash $OUTPUT_DIR/rgi \
         --data_dir data \
         --output_dir $OUTPUT_DIR \
+        --no_SSN $NO_SSN \
         --classifiers tree \
         --antismash_version 5 \
         --rgi_version 5
