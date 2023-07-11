@@ -2,7 +2,7 @@
 
 import argparse
 import cluster_function_prediction_tools as tools
-import os, sys
+import os
 from Bio import SeqIO
 import SSN_tools
 import readFeatureFiles
@@ -659,61 +659,3 @@ print(
     + " svm classifier: "
     + str(svm_antitumor_prob[0, 1])
 )
-
-# write output
-
-
-try:
-    if out_directory == "":
-        outfile = open(cluster_name + ".txt", "w")
-    else:
-        outfile = open(out_directory + "/" + cluster_name + ".txt", "w")
-except:
-    print(
-        "couldn't open output file, please provide an output directory that can be written to"
-    )
-    exit()
-
-tools.writeProbabilitiesToFile(
-    outfile,
-    "antibacterial",
-    tree_bacterial_prob,
-    log_bacterial_prob,
-    svm_bacterial_prob,
-)
-tools.writeProbabilitiesToFile(
-    outfile,
-    "anti-gram positive",
-    tree_antigrampos_prob,
-    log_antigrampos_prob,
-    svm_antigrampos_prob,
-)
-tools.writeProbabilitiesToFile(
-    outfile,
-    "anti-gram negative",
-    tree_antigramneg_prob,
-    log_antigramneg_prob,
-    svm_antigramneg_prob,
-)
-tools.writeProbabilitiesToFile(
-    outfile,
-    "antifugnal or antitumor or cytotoxic",
-    tree_antieuk_prob,
-    log_antieuk_prob,
-    svm_antieuk_prob,
-)
-tools.writeProbabilitiesToFile(
-    outfile,
-    "antifungal",
-    tree_antifungal_prob,
-    log_antifungal_prob,
-    svm_antifungal_prob,
-)
-tools.writeProbabilitiesToFile(
-    outfile,
-    "antitumor or cytotoxic",
-    tree_antitumor_prob,
-    log_antitumor_prob,
-    svm_antitumor_prob,
-)
-outfile.close()
