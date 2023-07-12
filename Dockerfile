@@ -15,10 +15,9 @@ RUN apt-get update && apt-get -y upgrade \
     && rm -rf /var/lib/apt/lists/*
 
 
-
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 
-RUN echo '12' >/dev/null && mkdir deps && cd deps && \
+RUN echo '12' >/dev/null && mkdir /deps && cd /deps && \
        git clone --branch main https://github.com/dileep-kishore/antibiotic-prediction.git
 
 RUN wget https://github.com/conda-forge/miniforge/releases/latest/download/Mambaforge-Linux-x86_64.sh
@@ -31,7 +30,6 @@ RUN bash /deps/antibiotic-prediction/setup/install_natural_product.sh
 # -----------------------------------------
 
 #ENV PATH=$PATH1
-
 
 COPY ./ /kb/module
 RUN mkdir -p /kb/module/work
