@@ -41,6 +41,5 @@ if [ ! -f "$OUTPUT_DIR/prediction_results.csv" ]; then
         --rgi_version 5
 fi
 
-# TODO: Two sets of classifiers SSN and no_SSN
 # TODO: Documentation in HTML
 # TODO: Provide options for svm, log
