@@ -14,7 +14,7 @@ if [ ! -d "$OUTPUT_DIR/antismash" ]; then
 fi
 
 # Step 2: For each BGC get fasta and run RGI
-conda deactivate
+source deactivate
 source activate rgi5
 if [ ! -d "$OUTPUT_DIR/rgi" ]; then
     echo "Running RGI"
@@ -28,7 +28,7 @@ if [ ! -d "$OUTPUT_DIR/rgi" ]; then
 fi
 
 # Step 3: Run prediction script for each BGC
-conda deactivate
+source deactivate
 source activate natural_product
 if [ ! -f "$OUTPUT_DIR/prediction_results.csv" ]; then
     echo "Running BGC activity prediction"
