@@ -7,10 +7,12 @@ mkdir -p $OUTPUT_DIR
 NO_SSN=$3
 
 # Step 1: Run antismash
+source deactivate
+source activate antismash
 if [ ! -d "$OUTPUT_DIR/antismash" ]; then
     echo "Running antismash"
     mkdir -p $OUTPUT_DIR/antismash
-    bash run_antismash5.sh $GENOME $OUTPUT_DIR/antismash
+    bash run_antismash7.sh $GENOME $OUTPUT_DIR/antismash
 fi
 
 # Step 2: For each BGC get fasta and run RGI
