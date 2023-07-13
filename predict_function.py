@@ -65,11 +65,9 @@ def run_classifiers(classifiers, test_features, antismash_bgc_file):
         classifier, function = cl_name.split("_")
         probability = cl.predict_proba(test_features)
         genome = antismash_bgc_file.parent.parent.stem
-        contig = bgc_name.split("_")[0]
-        region = bgc_name.rsplit("...")[-1].strip("region")
+        region = bgc_name
         prediction = {
             "genome": genome,
-            "contig": contig,
             "region": region,
             "classifier": classifier,
             "function": function,
