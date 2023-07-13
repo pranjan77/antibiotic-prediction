@@ -6,8 +6,8 @@ from typing import List
 
 import pandas as pd
 
+
 def main(genome_paths: List[pathlib.Path], output_dir: pathlib.Path):
-    print(output_dir)
     partial_results = []
     genomes = [genome_path.stem for genome_path in genome_paths]
     for outputs in output_dir.iterdir():
@@ -21,10 +21,12 @@ def main(genome_paths: List[pathlib.Path], output_dir: pathlib.Path):
     results.to_csv(results_file_csv, sep=",", index=False)
     results.to_html(results_file_html, index=False)
 
+
 if __name__ == "__main__":
     PARSER = argparse.ArgumentParser()
     PARSER.add_argument(
-        "genomes", help="File paths of the genomes used for BGC function prediction",
+        "genomes",
+        help="File paths of the genomes used for BGC function prediction",
         nargs="+",
     )
     PARSER.add_argument(
