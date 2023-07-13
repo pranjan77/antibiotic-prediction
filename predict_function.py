@@ -77,7 +77,6 @@ def run_classifiers(classifiers, test_features, antismash_bgc_file):
             "probability": "{:.3f}".format(probability[0, 1]),
         }
         predictions.append(prediction)
-        print(prediction)
     return predictions
 
 
