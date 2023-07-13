@@ -6,7 +6,7 @@ MAINTAINER KBase Developer
 # install line here, a git checkout to download code, or run any other
 # installation scripts.
 
-ARG INS_COMMIT="e29f7ebf97f24645f24077a70a34b92f01cc8cea"
+ARG INS_COMMIT="94a47d68b9eb03425fc26690e0d3e2af13dd3524"
 
 RUN apt-get update && apt-get -y upgrade \
   && apt-get install -y --no-install-recommends \
