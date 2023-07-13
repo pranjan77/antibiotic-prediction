@@ -16,6 +16,9 @@ import readInputFiles
 def collect_input_files(antismash_dir: pathlib.Path, rgi_dir: pathlib.Path):
     input_files = []
     antismash_files = list(antismash_dir.glob("*region*.gbk"))
+    genome_name = antismash_dir.parent.stem
+    if len(antismash_files) == 0:
+        raise ValueError("No BGCs were found for " + genome_name)
     for antismash_file in antismash_files:
         as_filename = antismash_file.stem
         rgi_file = rgi_dir / (as_filename + "/" + as_filename + ".txt")
