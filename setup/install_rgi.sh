@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 
+GIT_COMMIT=$1
+
 export PATH="/mambaforge/bin:$PATH"
 
 # Set up RGI5
-mamba env create -f /deps/antibiotic-prediction/setup/env_rgi5.yml
+wget https://raw.githubusercontent.com/dileep-kishore/antibiotic-prediction/$GIT_COMMIT/setup/env_rgi5.yml -p /deps
+mamba env create -f /deps/env_rgi5.yml
