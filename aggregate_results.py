@@ -35,6 +35,32 @@ def update_results(results: pd.DataFrame):
     return results_updated
 
 
+def generate_html_table(df: pd.DataFrame):
+    """Display a pandas.DataFrame as jQuery DataTables"""
+    import uuid
+
+    # Generate random container name
+    id_container = uuid.uuid1()
+    output = """
+<div id="datatable-container-{id_container}">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css"/>
+  <script type="text/javascript">
+    $(document).ready( function () {{
+        $('#BGCtable').DataTable();
+    }});
+  </script>
+  <!-- Insert table below -->
+  {table}
+</div>
+    """.format(
+        id_container=id_container,
+        table=df.to_html(index=False, table_id="BGCtable", classes="display"),
+    )
+    return output
+
+
 def main(genome_paths: List[pathlib.Path], output_dir: pathlib.Path):
     partial_results = []
     genomes = [genome_path.stem for genome_path in genome_paths]
@@ -48,7 +74,9 @@ def main(genome_paths: List[pathlib.Path], output_dir: pathlib.Path):
     results_file_csv = output_dir / "aggregated_results.csv"
     results_file_html = output_dir / "aggregated_results.html"
     results_updated.to_csv(results_file_csv, sep=",", index=False)
-    results_updated.to_html(results_file_html, index=False)
+    with open(results_file_html, "w") as fid:
+        results_html = generate_html_table(results_updated)
+        fid.write(results_html)
 
 
 if __name__ == "__main__":
