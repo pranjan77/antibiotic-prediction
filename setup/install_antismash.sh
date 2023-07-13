@@ -17,6 +17,9 @@ export PATH="/mambaforge/bin:$PATH"
 mamba create -n antismash python=3.9
 source activate antismash
 
+# Alternative to line 12
+# mamba install -c bioconda hmmer2 hmmer diamond=2.0.14 fasttree prodigal blast muscle glimmerhmm
+
 wget https://dl.secondarymetabolites.org/releases/7.0.0/antismash-7.0.0.tar.gz  \
       && tar -zxf antismash-7.0.0.tar.gz
 
