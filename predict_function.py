@@ -61,14 +61,25 @@ def read_rgi_bgc(file: pathlib.Path):
     return rgi_infile
 
 
+def get_region_name(antismash_bgc_file: pathlib.Path):
+    bgc_name = antismash_bgc_file.stem
+    region_id = "Region" + bgc_name.split("region")[-1]
+    with open(antismash_bgc_file) as fid:
+        record = SeqIO.read(fid, "genbank")
+    fasta_id = record.annotations["structured_comment"]["antiSMASH-Data"][
+        "Original ID"
+    ].split(" ")[0]
+    region_name = fasta_id + "_" + region_id
+    return region_name
+
+
 def run_classifiers(classifiers, test_features, antismash_bgc_file):
     predictions = []
-    bgc_name = antismash_bgc_file.stem
     for cl_name, cl in classifiers.items():
         classifier, function = cl_name.split("_")
         probability = cl.predict_proba(test_features)
         genome = antismash_bgc_file.parent.parent.stem
-        region = bgc_name
+        region = get_region_name(antismash_bgc_file)
         prediction = {
             "genome": genome,
             "region": region,
