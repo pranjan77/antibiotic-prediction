@@ -18,7 +18,7 @@ def collect_input_files(antismash_dir: pathlib.Path, rgi_dir: pathlib.Path):
     antismash_files = list(antismash_dir.glob("*region*.gbk"))
     genome_name = antismash_dir.parent.stem
     if len(antismash_files) == 0:
-        raise ValueError("No BGCs were found for " + genome_name)
+        print("No BGCs were found for " + genome_name + " !!!")
     for antismash_file in antismash_files:
         as_filename = antismash_file.stem
         rgi_file = rgi_dir / (as_filename + "/" + as_filename + ".txt")
@@ -64,11 +64,18 @@ def read_rgi_bgc(file: pathlib.Path):
 def get_region_name(antismash_bgc_file: pathlib.Path):
     bgc_name = antismash_bgc_file.stem
     region_id = "Region" + bgc_name.split("region")[-1]
-    with open(antismash_bgc_file) as fid:
-        record = SeqIO.read(fid, "genbank")
-    fasta_id = record.annotations["structured_comment"]["antiSMASH-Data"][
-        "Original ID"
-    ].split(" ")[0]
+    is_id_truncated = True if "..." in bgc_name else False
+    if is_id_truncated:
+        with open(antismash_bgc_file) as fid:
+            record = SeqIO.read(fid, "genbank")
+        try:
+            fasta_id = record.annotations["structured_comment"]["antiSMASH-Data"][
+                "Original ID"
+            ].split(" ")[0]
+        except KeyError:
+            fasta_id = bgc_name.split(".region")[0]
+    else:
+        fasta_id = bgc_name.split(".region")[0]
     region_name = fasta_id + "_" + region_id
     return region_name
 

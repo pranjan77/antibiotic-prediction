@@ -12,20 +12,23 @@ def update_results(results: pd.DataFrame):
     results_filtered = results[~results.function.isin({"antitumor", "antieuk"})]
     # Step 2: Update dataframe
     data_dict = dict()
-    regions = set()
+    genome_regions = set()
     for _, row in results_filtered.iterrows():
-        if row.region not in regions:
-            regions.add(row.region)
+        genome_region = row.genome + "_" + row.region
+        if genome_region not in genome_regions:
+            genome_regions.add(genome_region)
             data_item = dict()
             data_item["Genome"] = row.genome
             data_item["Region"] = row.region
+            data_item["Classifier"] = row.classifier
             data_item[row.function] = row.probability
-            data_dict[row.region] = data_item
+            data_dict[genome_region] = data_item
         else:
-            data_dict[row.region][row.function] = row.probability
+            data_dict[genome_region][row.function] = row.probability
     columns = [
         "Genome",
         "Region",
+        "Classifier",
         "antibacterial",
         "antifungal",
         "antigrampos",
@@ -56,7 +59,12 @@ def generate_html_table(df: pd.DataFrame):
 </div>
     """.format(
         id_container=id_container,
-        table=df.to_html(index=False, table_id="BGCtable", classes="display"),
+        table=df.to_html(
+            index=False,
+            table_id="BGCtable",
+            classes="display",
+            float_format=lambda x: "{:.3f}".format(x),
+        ),
     )
     return output
 
@@ -73,7 +81,12 @@ def main(genome_paths: List[pathlib.Path], output_dir: pathlib.Path):
     results_updated = update_results(results)
     results_file_csv = output_dir / "aggregated_results.csv"
     results_file_html = output_dir / "aggregated_results.html"
-    results_updated.to_csv(results_file_csv, sep=",", index=False)
+    results_updated.to_csv(
+        results_file_csv,
+        sep=",",
+        index=False,
+        float_format=lambda x: "{:.3f}".format(x),
+    )
     with open(results_file_html, "w") as fid:
         results_html = generate_html_table(results_updated)
         fid.write(results_html)

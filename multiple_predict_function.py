@@ -17,10 +17,11 @@ def aggregate_results_cmd(genomes: List[str], output_dir: str):
 
 def main(genomes: List[str], output_dir: str, no_SSN: str):
     # Step 1: Run BGC function prediction
-    for genome in genomes:
-        print("Running BGC function prediction on " + genome)
+    for i, genome in enumerate(genomes):
+        print(str(i + 1) + ". Running BGC function prediction on " + genome)
         predict_cmd = predict_function_cmd(genome, output_dir, no_SSN)
         subprocess.run(predict_cmd, check=True)
+        print("--------------------------------------------")
     # Step 2: Aggregate results
     print("Aggregating results")
     aggregate_cmd = aggregate_results_cmd(genomes, output_dir)
