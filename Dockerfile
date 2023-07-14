@@ -6,7 +6,7 @@ MAINTAINER KBase Developer
 # install line here, a git checkout to download code, or run any other
 # installation scripts.
 
-ARG INS_COMMIT="94a47d68b9eb03425fc26690e0d3e2af13dd3524"
+ARG INS_COMMIT="66584f928aa3ca440179d99b688e906473c33604"
 
 RUN apt-get update && apt-get -y upgrade \
   && apt-get install -y --no-install-recommends \
@@ -35,8 +35,8 @@ RUN bash /deps/install_natural_product.sh $INS_COMMIT
 
 
 # Clone antibiotic-prediction repo
-ARG RUN_COMMIT="e29f7ebf97f24645f24077a70a34b92f01cc8cea"
-RUN echo '12' >/dev/null && mkdir /deps && cd /deps && \
+ARG RUN_COMMIT="66584f928aa3ca440179d99b688e906473c33604"
+RUN echo '12' >/dev/null && cd /deps && \
        git clone --branch main https://github.com/dileep-kishore/antibiotic-prediction.git && \
        cd antibiotic-prediction && git checkout $RUN_COMMIT
 
